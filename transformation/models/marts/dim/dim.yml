@@ -1,0 +1,140 @@
+models:
+  - name: dim_user
+    description: "A dimensional model representing user information from Salesforce"
+    columns:
+      - name: user_id
+        description: "The unique identifier for the user"
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_account
+    description: "A dimensional model representing Account information from Salesforce"
+    columns:
+      - name: account_id
+        description: "The unique identifier for the account"
+        tests:
+          - unique
+          - not_null
+      - name: account_key
+        description: "The surrogate key  identifier for the account"
+        tests:
+          - unique
+          - not_null
+  
+  - name: dim_contact
+    description: "A dimensional model representing Contact information from Salesforce"
+    columns:
+      - name: contact_id
+        description: "The unique identifier for the contact"
+        tests:
+          - unique
+          - not_null
+      - name: contact_key
+        description: "The surrogate key  identifier for the account"
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_product
+    description: "A dimensional model representing Contact information from Salesforce"
+    columns:
+      - name: product_id
+        description: "The unique identifier for the contact"
+        tests:
+          - unique
+          - not_null
+      - name: product_key
+        description: "The surrogate key  identifier for the account"
+        tests:
+          - unique
+          - not_null
+  
+  - name: fact_opportunities
+    description: "This table contains opportunity data including details about the opportunity, associated account, user, and campaign."
+    columns:
+      - name: opportunity_key
+        description: "Unique key for each opportunity."
+        tests:
+          - unique
+          - not_null
+
+      - name: date_key
+        description: "Foreign key to the date dimension."
+        tests:
+          - not_null
+
+      - name: account_key
+        description: "Foreign key to the account dimension."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_account')
+              field: account_key
+
+      - name: user_key
+        description: "Foreign key to the user dimension (owner of the opportunity)."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_user')
+              field: user_key
+
+      - name: contact_key
+        description: "Foreign key to the contact dimension."
+        tests:
+          - relationships:
+              to: ref('dim_contact')
+              field: contact_key
+
+      - name: campaign_key
+        description: "Foreign key to the campaign dimension."
+        tests:
+          - relationships:
+              to: ref('dim_campaign')
+              field: campaign_key
+
+      - name: stage_name
+        description: "Stage name of the opportunity in the sales pipeline."
+        tests:
+          - not_null
+
+      - name: amount
+        description: "Amount associated with the opportunity."
+        tests:
+          - not_null
+
+      - name: probability
+        description: "Probability percentage of closing the opportunity."
+        tests:
+          - not_null
+
+      - name: expected_revenue
+        description: "Expected revenue from the opportunity."
+        tests:
+          - not_null
+
+      - name: name
+        description: "Name of the opportunity."
+        tests:
+          - not_null
+
+      - name: lead_source
+        description: "Source from which the opportunity was generated."
+        tests:
+          - not_null
+
+      - name: is_closed
+        description: "Indicates whether the opportunity is closed."
+        tests:
+          - not_null
+
+      - name: is_won
+        description: "Indicates whether the opportunity has been won."
+        tests:
+          - not_null
+
+      - name: last_modified_date
+        description: "The date when the opportunity was last modified."
+        tests:
+          - not_null

@@ -1,0 +1,120 @@
+version: 2
+
+models:
+  - name: fact_case
+    description: "Fact table for cases, containing information related to support cases."
+    columns:
+      - name: case_key
+        description: "Unique key for each case."
+        tests:
+          - unique
+          - not_null
+      - name: isclosed
+        tests:
+          - accepted_values:
+              values: [TRUE, FALSE]
+      - name: account_key
+        description: "Foreign key referencing the account dimension."
+        tests:
+          - not_null
+          - relationships:
+              field: account_key
+              to: ref('dim_account')
+              field: account_key
+      - name: user_key
+        description: "Foreign key referencing the user dimension."
+        tests:
+          - not_null
+          - relationships:
+              field: user_key
+              to: ref('dim_user')
+              field: user_key
+      - name: contact_key
+        description: "Foreign key referencing the contact dimension."
+        tests:
+          - not_null
+          - relationships:
+              field: contact_key
+              to: ref('dim_contact')
+              field: contact_key
+      - name: product_key
+        description: "Foreign key referencing the product dimension."
+        tests:
+          - relationships:
+              field: product_key
+              to: ref('dim_product')
+              field: product_key
+      - name: date_key
+        description: "Foreign key referencing the date dimension."
+        tests:
+          - not_null
+          - relationships:
+              field: date_key
+              to: ref('dim_date')
+              field: date_day
+      - name: case_number
+        description: "The case number associated with the case."
+  - name: fact_leads
+    description: "This table contains lead data including details about the lead's owner, status, and conversion metrics."
+    columns:
+      - name: lead_key
+        description: "Unique key for each lead."
+        tests:
+          - unique
+          - not_null
+
+      - name: date_key
+        description: "Foreign key to the date dimension."
+        tests:
+          - not_null
+
+      - name: user_key
+        description: "Foreign key to the user dimension (owner of the lead)."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_user')
+              field: user_key
+
+      - name: account_key
+        description: "Foreign key to the account dimension."
+        tests:
+          - relationships:
+              to: ref('dim_account')
+              field: account_key
+
+      - name: contact_key
+        description: "Foreign key to the contact dimension."
+        tests:
+          - relationships:
+              to: ref('dim_contact')
+              field: contact_key
+
+      - name: created_date
+        description: "The date when the lead was created."
+        tests:
+          - not_null
+
+      - name: status
+        description: "Current status of the lead."
+        tests:
+          - not_null
+
+      - name: lead_source
+        description: "Source from which the lead was generated."
+        tests:
+          - not_null
+
+      - name: industry
+        description: "Industry associated with the lead."
+      
+      - name: is_converted
+        description: "Indicates whether the lead has been converted."
+        tests:
+          - not_null
+
+      - name: last_modified_date
+        description: "The date when the lead was last modified."
+        tests:
+          - not_null
+
